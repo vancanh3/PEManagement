@@ -57,5 +57,10 @@ namespace PersionalExpenditureManagement.PE.DbContext.Infrastructure
         {
             await context.DisposeAsync();
         }
+
+        public GenericRepository<T> GenericDB<T>() where T : class
+        {
+            return new GenericRepository<T>(context);
+        }
     }
 }

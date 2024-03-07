@@ -5,13 +5,11 @@ namespace PersionalExpenditureManagement.PE.DbContext.Infrastructure
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        internal PEDbContext context;
-        internal DbSet<TEntity> Repository;
+        public readonly DbSet<TEntity> Repository;
 
         public GenericRepository(PEDbContext pEDbContext)
         {
-            context = pEDbContext;
-            Repository = context.Set<TEntity>();
+            Repository = pEDbContext.Set<TEntity>();
         }
 
         public async Task<List<TEntity>> GetAll()
@@ -71,17 +69,12 @@ namespace PersionalExpenditureManagement.PE.DbContext.Infrastructure
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (context.Entry(entityToDelete).State == EntityState.Detached)
-            {
-                Repository.Attach(entityToDelete);
-            }
             Repository.Remove(entityToDelete);
         }
 
         public virtual void Update(TEntity entityToUpdate)
         {
             Repository.Attach(entityToUpdate);
-            context.Entry(entityToUpdate).State = EntityState.Modified;
         }
     }
 }
